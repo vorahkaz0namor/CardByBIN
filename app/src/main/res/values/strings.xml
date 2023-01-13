@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CardByBin</string>
+    <string name="sample_bin">45717360</string>
+    <string name="hint_for_enter_bin">Enter the first eight digits of a card number (BIN/IIN)</string>
+    <string name="scheme_hint">SCHEME / NETWORK</string>
+    <string name="brand_hint">BRAND</string>
+    <string name="number_hint">CARD NUMBER</string>
+    <string name="length_hint">LENGTH</string>
+    <string name="luhn_hint">LUHN</string>
+    <string name="type_hint">TYPE</string>
+    <string name="prepaid_hint">PREPAID</string>
+    <string name="country_hint">COUNTRY</string>
+    <string name="coordinates_data">(latitude: %1$d, longitude: %2$d)</string>
+    <string name="get_card_info_button_text">Get card information</string>
+</resources>

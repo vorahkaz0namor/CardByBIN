@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/schemeHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/scheme_hint"
+        />
+
+    <TextView
+        android:id="@+id/scheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/schemeHint"
+        tools:srcCompat="@sample/card.json/scheme"
+        />
+
+    <TextView
+        android:id="@+id/brandHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/scheme"
+        android:hint="@string/brand_hint"
+        />
+
+    <TextView
+        android:id="@+id/brand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/brandHint"
+        tools:srcCompat="@sample/card.json/brand"
+        />
+
+    <TextView
+        android:id="@+id/numberHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/brand"
+        android:hint="@string/number_hint"
+        />
+
+    <LinearLayout
+        android:id="@+id/lengthHintGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/numberHint"
+        app:layout_constraintStart_toStartOf="@id/numberHint"
+        app:layout_constraintEnd_toEndOf="@id/numberHint"
+        >
+
+    <TextView
+        android:id="@+id/lengthHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/length_hint"
+        />
+
+    <TextView
+        android:id="@+id/luhnHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/luhn_hint"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lengthGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lengthHintGroup">
+
+        <TextView
+            android:id="@+id/length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:srcCompat="@sample/card.json/number/length"
+            />
+
+        <TextView
+            android:id="@+id/luhn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:srcCompat="@sample/card.json/number/luhn"
+            />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/indent"
+    tools:context=".activity.MainActivity">
+
+    <EditText
+        android:id="@+id/cardBin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:hint="@string/sample_bin"
+        android:textAlignment="center"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/cardBinHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_for_enter_bin"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/cardBin"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/getCardInfoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/cardBinHint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/get_card_info_button_text"
+        />
+
+    <FrameLayout
+        android:id="@+id/groupOne"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/getCardInfoButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/groupTwo"
+        >
+
+        <include
+            android:id="@+id/groupOneInclude"
+            layout="@layout/scheme_brand_number_group"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/groupTwo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/getCardInfoButton"
+        app:layout_constraintStart_toEndOf="@id/groupOne"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <include
+            android:id="@+id/groupTwoInclude"
+            layout="@layout/type_prepaid_country_group"/>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
