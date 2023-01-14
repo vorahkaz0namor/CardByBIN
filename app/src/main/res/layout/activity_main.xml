@@ -12,37 +12,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:hint="@string/sample_bin"
+        android:hint="@string/hint_for_enter_bin"
         android:textAlignment="center"
         android:importantForAutofill="no"
         android:inputType="number"
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <TextView
-        android:id="@+id/cardBinHint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/hint_for_enter_bin"
-        android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@id/cardBin"
-        />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/getCardInfoButton"
+        style="@style/Widget.AppTheme.CardOutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/cardBinHint"
+        app:layout_constraintTop_toBottomOf="@id/cardBin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/barrierTop"
         android:text="@string/get_card_info_button_text"
         />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="getCardInfoButton" />
+
     <FrameLayout
         android:id="@+id/groupOne"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/getCardInfoButton"
+        app:layout_constraintTop_toBottomOf="@id/barrierTop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/groupTwo"
         >
@@ -55,9 +55,9 @@
 
     <FrameLayout
         android:id="@+id/groupTwo"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/getCardInfoButton"
+        app:layout_constraintTop_toBottomOf="@id/barrierTop"
         app:layout_constraintStart_toEndOf="@id/groupOne"
         app:layout_constraintEnd_toEndOf="parent"
         >
@@ -65,6 +65,26 @@
         <include
             android:id="@+id/groupTwoInclude"
             layout="@layout/type_prepaid_country_group"/>
+
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="groupOne, groupTwo" />
+
+    <FrameLayout
+        android:id="@+id/groupThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/barrierBottom"
+        >
+
+        <include
+            android:id="@+id/groupThreeInclude"
+            layout="@layout/bank_group"/>
 
     </FrameLayout>
 

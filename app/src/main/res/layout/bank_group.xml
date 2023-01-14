@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/bankHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/bank_hint"
+        />
+
+    <TextView
+        android:id="@+id/bankNameAndCity"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        tools:srcCompat="@sample/card.json/bank/name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bankHint"
+        app:layout_constraintBottom_toTopOf="@id/bankUrl"
+        />
+
+    <TextView
+        android:id="@+id/bankUrl"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        tools:srcCompat="@sample/card.json/bank/url"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bankNameAndCity"
+        app:layout_constraintBottom_toTopOf="@id/bankPhone"
+        />
+
+    <TextView
+        android:id="@+id/bankPhone"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        android:autoLink="phone"
+        tools:srcCompat="@sample/card.json/bank/phone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bankUrl"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.AppTheme.CardText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:paddingBottom">@dimen/text_padding_bottom</item>
+    </style>
+
+    <style name="Widget.AppTheme.ShiftedCardText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:paddingStart">@dimen/text_padding_bottom</item>
+    </style>
+
+    <style name="Widget.AppTheme.CardOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">?attr/colorControlNormal</item>
+        <item name="strokeColor">?attr/colorControlNormal</item>
+        <item name="strokeWidth">@dimen/stroke_width</item>
+        <item name="android:textSize">@dimen/indent</item>
+        <item name="android:layout_marginTop">@dimen/button_margin</item>
+        <item name="android:layout_marginBottom">@dimen/indent</item>
+        <item name="rippleColor">@color/rippling_button</item>
+    </style>
+
+</resources>

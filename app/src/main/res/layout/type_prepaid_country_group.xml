@@ -15,6 +15,7 @@
 
     <TextView
         android:id="@+id/type"
+        style="@style/Widget.AppTheme.CardText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/typeHint"
@@ -31,6 +32,7 @@
 
     <TextView
         android:id="@+id/prepaid"
+        style="@style/Widget.AppTheme.CardText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/prepaidHint"
@@ -45,29 +47,59 @@
         android:hint="@string/country_hint"
         />
 
-    <LinearLayout
-        android:id="@+id/countryGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/countryHint">
-
         <TextView
             android:id="@+id/countryFlag"
+            android:paddingHorizontal="@dimen/text_padding_bottom"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:srcCompat="@sample/card.json/country/emoji"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/countryHint"/>
 
         <TextView
             android:id="@+id/countryName"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/zero_dp"
             android:layout_height="wrap_content"
-            tools:srcCompat="@sample/card.json/country/name" />
-
-    </LinearLayout>
+            tools:srcCompat="@sample/card.json/country/name"
+            app:layout_constraintStart_toEndOf="@id/countryFlag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/countryHint"
+            app:layout_constraintBottom_toTopOf="@id/latitudeHint"/>
 
     <TextView
-        android:id="@+id/coordinates"
-        android:layout_width="match_parent"
+        android:id="@+id/latitudeHint"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/countryGroup" />
+        android:hint="@string/latitude_hint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/countryName" />
+
+    <TextView
+        android:id="@+id/latitude"
+        style="@style/Widget.AppTheme.ShiftedCardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/latitudeHint"
+        app:layout_constraintTop_toTopOf="@id/latitudeHint"
+        app:layout_constraintBottom_toBottomOf="@id/latitudeHint"
+        tools:srcCompat="@sample/card.json/country/latitude"/>
+
+    <TextView
+        android:id="@+id/longitudeHint"
+        style="@style/Widget.AppTheme.CardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/longitude_hint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/latitudeHint" />
+
+    <TextView
+        android:id="@+id/longitude"
+        style="@style/Widget.AppTheme.ShiftedCardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/longitudeHint"
+        app:layout_constraintTop_toBottomOf="@id/latitudeHint"
+        tools:srcCompat="@sample/card.json/country/latitude"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ru.cft.cardbybin.R
 import ru.cft.cardbybin.db.AppDb
 import ru.cft.cardbybin.dto.Card
 import ru.cft.cardbybin.model.FeedModel
@@ -34,5 +35,11 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
                 Log.d("WE'VE GOT AN EXCEPTION:", e.toString())
             }
         })
+    }
+
+    fun binHistory() {
+        thread {
+
+        }
     }
 }

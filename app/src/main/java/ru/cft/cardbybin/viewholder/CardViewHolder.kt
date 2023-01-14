@@ -1,8 +1,8 @@
 package ru.cft.cardbybin.viewholder
 
-import okhttp3.internal.format
 import ru.cft.cardbybin.databinding.ActivityMainBinding
 import ru.cft.cardbybin.dto.Card
+import ru.cft.cardbybin.util.CompanionCardByBin.yesOrNo
 
 class CardViewHolder(
     private val binding: ActivityMainBinding
@@ -18,19 +18,20 @@ class CardViewHolder(
                 scheme.text = card.scheme
                 brand.text = card.brand
                 length.text = card.number.length.toString()
-                luhn.text = card.number.luhn.toString()
+                luhn.text = yesOrNo(card.number.luhn)
             }
             groupTwoInclude.apply {
                 type.text = card.type
-                prepaid.text = card.prepaid.toString()
+                prepaid.text = yesOrNo(card.prepaid)
                 countryFlag.text = card.country.emoji
                 countryName.text = card.country.name
-                coordinates.text =
-                    format(
-                        "(latitude: %4d, longitude: %4d)",
-                        card.country.latitude,
-                        card.country.longitude
-                    )
+                latitude.text = card.country.latitude.toString()
+                longitude.text =  card.country.longitude.toString()
+            }
+            groupThreeInclude.apply {
+                bankNameAndCity.text = StringBuilder("${card.bank.name}, ${card.bank.city}")
+                bankUrl.text = card.bank.url
+                bankPhone.text = card.bank.phone
             }
         }
     }
