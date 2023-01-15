@@ -13,7 +13,7 @@ import ru.cft.cardbybin.databinding.ActivityMainBinding
 import ru.cft.cardbybin.util.CompanionCardByBin.BIN_LENGTH
 import ru.cft.cardbybin.viewholder.CardViewHolder
 import ru.cft.cardbybin.viewmodel.CardViewModel
-import ru.netology.nmedia.util.AndroidUtils
+import ru.cft.cardbybin.util.AndroidUtils
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }

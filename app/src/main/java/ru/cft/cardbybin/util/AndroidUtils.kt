@@ -1,4 +1,4 @@
-package ru.netology.nmedia.util
+package ru.cft.cardbybin.util
 
 import android.content.Context
 import android.view.View
