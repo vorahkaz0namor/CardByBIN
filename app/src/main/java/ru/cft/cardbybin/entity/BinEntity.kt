@@ -5,13 +5,12 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class BinEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey
     val bin: Int
 ) {
     fun toDto() = bin
 
     companion object {
-        fun fromDto(bin: Int) = BinEntity(0, bin)
+        fun fromDto(bin: Int) = BinEntity(bin)
     }
 }

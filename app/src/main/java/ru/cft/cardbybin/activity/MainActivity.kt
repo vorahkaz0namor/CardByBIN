@@ -15,6 +15,7 @@ import ru.netology.nmedia.util.AndroidUtils
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val viewModel: CardViewModel by viewModels()
+    private var snackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupListeners() {
         binding.apply {
             getCardInfoButton.setOnClickListener {
+                if (snackbar != null && snackbar?.isShown == true)
+                    snackbar?.dismiss()
                 AndroidUtils.hideKeyboard(cardBin)
                 val bin = cardBin.text.trim()
                 when {
@@ -50,12 +53,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(
+        snackbar = Snackbar.make(
             binding.root,
             message,
             BaseTransientBottomBar.LENGTH_INDEFINITE
         )
             .setAction(android.R.string.ok) {}
-            .show()
+        snackbar?.show()
     }
 }

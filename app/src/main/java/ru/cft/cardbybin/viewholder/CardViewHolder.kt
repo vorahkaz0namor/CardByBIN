@@ -9,7 +9,6 @@ class CardViewHolder(
 ) {
     fun bind(card: Card) {
         fillingCardFields(card)
-        setupListeners(card)
     }
 
     private fun fillingCardFields(card: Card) {
@@ -34,9 +33,5 @@ class CardViewHolder(
                 bankPhone.text = card.bank.phone
             }
         }
-    }
-
-    private fun setupListeners(card: Card) {
-
     }
 }

@@ -7,16 +7,25 @@
     android:padding="@dimen/indent"
     tools:context=".activity.MainActivity">
 
+    <TextView
+        android:id="@+id/cardBinHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/hint_for_enter_bin"
+        />
+
     <EditText
         android:id="@+id/cardBin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:hint="@string/hint_for_enter_bin"
+        android:hint="@string/sample_bin"
         android:textAlignment="center"
         android:importantForAutofill="no"
         android:inputType="number"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardBinHint"
         />
 
     <com.google.android.material.button.MaterialButton
