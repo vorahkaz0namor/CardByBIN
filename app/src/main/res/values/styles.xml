@@ -19,4 +19,9 @@
         <item name="rippleColor">@color/rippling_button</item>
     </style>
 
+    <style name="Widget.AppTheme.CardBinEnter" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu">
+        <item name="hintEnabled">false</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+    </style>
+
 </resources>

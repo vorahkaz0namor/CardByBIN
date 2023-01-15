@@ -12,7 +12,7 @@ class CardViewHolder(
     }
 
     private fun fillingCardFields(card: Card) {
-        binding.apply {
+        binding.cardView.apply {
             groupOneInclude.apply {
                 scheme.text = card.scheme
                 brand.text = card.brand

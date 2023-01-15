@@ -1,7 +1,9 @@
 package ru.cft.cardbybin.model
 
+import ru.cft.cardbybin.dto.Card
+
 data class FeedModel(
-    val binList: List<Int> = emptyList(),
+    val card: Card = Card(),
     val loading: Boolean = false,
     val error: Boolean = false,
     val showing: Boolean = false
@@ -12,10 +14,10 @@ data class FeedModel(
         error = false
     )
 
-    fun showing(binList: List<Int>) = copy(
+    fun showing(card: Card) = copy(
         loading = false,
         showing = true,
-        binList = binList,
+        card = card,
         error = false
     )
 

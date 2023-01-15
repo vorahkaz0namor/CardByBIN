@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:isScrollContainer="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/cardViewGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:constraint_referenced_ids="
+            cardBinHint,
+            dropdownCardBin,
+            getCardInfoButton,
+            barrierTop,
+            groupOne,
+            groupTwo,
+            barrierBottom,
+            groupThree
+        "
+        />
+
+    <TextView
+        android:id="@+id/cardBinHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/hint_for_enter_bin"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dropdownCardBin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/listCardBin"
+        style="@style/Widget.AppTheme.CardBinEnter"
+        app:layout_constraintTop_toBottomOf="@id/cardBinHint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <AutoCompleteTextView
+            android:id="@+id/listCardBin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:isScrollContainer="true"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/getCardInfoButton"
+        style="@style/Widget.AppTheme.CardOutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/dropdownCardBin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/barrierTop"
+        android:text="@string/get_card_info_button_text"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="getCardInfoButton" />
+
+    <FrameLayout
+        android:id="@+id/groupOne"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/barrierTop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/groupTwo"
+        >
+
+        <include
+            android:id="@+id/groupOneInclude"
+            layout="@layout/scheme_brand_number_group"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/groupTwo"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/barrierTop"
+        app:layout_constraintStart_toEndOf="@id/groupOne"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <include
+            android:id="@+id/groupTwoInclude"
+            layout="@layout/type_prepaid_country_group"/>
+
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="groupOne, groupTwo" />
+
+    <FrameLayout
+        android:id="@+id/groupThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/barrierBottom"
+        >
+
+        <include
+            android:id="@+id/groupThreeInclude"
+            layout="@layout/bank_group"/>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
