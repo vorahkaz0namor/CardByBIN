@@ -13,7 +13,6 @@ import ru.cft.cardbybin.repository.CardRepositoryDb
 import ru.cft.cardbybin.repository.CardRepositoryDbImpl
 import ru.cft.cardbybin.repository.CardRepositoryNet
 import ru.cft.cardbybin.repository.CardRepositoryNetImpl
-import kotlin.concurrent.thread
 
 class CardViewModel(application: Application) : AndroidViewModel(application) {
     private val repositoryNet: CardRepositoryNet = CardRepositoryNetImpl()
@@ -30,18 +29,16 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getCardInfo(bin: Int) {
         _cardInfo.value = _cardInfo.value?.loading()
-        thread {
-            showingBin = bin.toString()
-            repositoryDb.saveBin(bin)
-            getBinHistory()
-        }
         repositoryNet.getCardInfo(bin, object : CardRepositoryNet.CardCallback<Card> {
             override fun onSuccess(result: Card) {
+                showingBin = bin.toString()
+                repositoryDb.saveBin(bin)
+                getBinHistory()
                 _cardInfo.postValue(_cardInfo.value?.showing(result))
             }
             override fun onError(e: Exception) {
                 Log.d("WE'VE GOT AN EXCEPTION:", e.toString())
-                _cardInfo.postValue(_cardInfo.value?.error())
+                _cardInfo.postValue(_cardInfo.value?.error(e.toString()))
             }
         })
     }

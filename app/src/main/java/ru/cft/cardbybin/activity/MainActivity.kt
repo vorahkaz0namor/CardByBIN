@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -19,10 +20,12 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val viewModel: CardViewModel by viewModels()
     private var snackbar: Snackbar? = null
+    private var binEditText: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        binEditText = binding.cardView.dropdownCardBin.editText
         initViews()
         subscribe()
         setupListeners()
@@ -30,15 +33,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        viewModel.saveCurrentBin(binding.cardView.dropdownCardBin.editText?.text?.trim().toString())
+        viewModel.saveCurrentBin(binEditText?.text?.trim().toString())
     }
 
     private fun initViews() {
-        binding.cardView.dropdownCardBin.editText?.apply {
+        binEditText?.apply {
             val savedBin = viewModel.getCurrentBin()
             setText(savedBin ?: getString(R.string.sample_bin))
             if (savedBin == null)
-                viewModel.getCardInfo(this.text.toString().toInt())
+                viewModel.getCardInfo(text.toString().toInt())
             else
                 viewModel.getCardInfo(viewModel.getShowingBin().toInt())
         }
@@ -50,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             binding.apply {
                 progressBarView.progressBar.isVisible = state.loading
                 errorView.errorGroup.isVisible = state.error
+                errorView.errorTitle.text = state.errorCode ?: getString(R.string.error_loading)
                 cardView.cardViewGroup.isVisible = state.showing
             }
         }
@@ -66,9 +70,7 @@ class MainActivity : AppCompatActivity() {
                     when {
                         bin.isBlank() -> showSnackbar(getString(R.string.empty_bin_field))
                         bin.length != BIN_LENGTH -> showSnackbar(getString(R.string.wrong_bin_length))
-                        else -> viewModel.getCardInfo(
-                            bin.toString().toInt()
-                        )
+                        else -> viewModel.getCardInfo(bin.toString().toInt())
                     }
                 }
                 dropdownCardBin.editText?.setOnClickListener {
@@ -76,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             errorView.retryButton.setOnClickListener {
-                subscribe()
+                viewModel.apply { getCardInfo(getShowingBin().toInt()) }
             }
         }
     }
@@ -97,7 +99,7 @@ class MainActivity : AppCompatActivity() {
             R.layout.bin_list_item,
             viewModel.binListForView.value?.binList ?: emptyList()
         )
-        val menu = binding.cardView.dropdownCardBin.editText as AutoCompleteTextView
+        val menu = binEditText as AutoCompleteTextView
         menu.setAdapter(dropDownAdapter)
     }
 }
