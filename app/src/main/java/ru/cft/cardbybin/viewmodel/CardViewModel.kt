@@ -38,7 +38,7 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
             }
             override fun onError(e: Exception) {
                 Log.d("WE'VE GOT AN EXCEPTION:", e.toString())
-                _cardInfo.postValue(_cardInfo.value?.error(e.toString()))
+                _cardInfo.postValue(_cardInfo.value?.error())
             }
         })
     }

@@ -5,10 +5,11 @@ import com.google.gson.reflect.TypeToken
 import okhttp3.*
 import okio.IOException
 import ru.cft.cardbybin.dto.Card
+import ru.cft.cardbybin.util.UnsafeOkHttpClient
 import java.lang.Exception
 
 class CardRepositoryNetImpl: CardRepositoryNet {
-    private val client = OkHttpClient.Builder().build()
+    private val client = UnsafeOkHttpClient.getUnsafeOkHttpClient()
     private val gson = Gson()
     private val typeToken = object : TypeToken<Card>() {}
     companion object {

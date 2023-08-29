@@ -17,33 +17,38 @@ import ru.cft.cardbybin.viewmodel.CardViewModel
 import ru.cft.cardbybin.util.AndroidUtils
 
 class MainActivity : AppCompatActivity() {
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val binding by lazy(LazyThreadSafetyMode.NONE) {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
     private val viewModel: CardViewModel by viewModels()
     private var snackbar: Snackbar? = null
-    private var binEditText: EditText? = null
+    private val binEditText: EditText?
+        get() = binding.cardView.dropdownCardBin.editText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        binEditText = binding.cardView.dropdownCardBin.editText
         initViews()
         subscribe()
         setupListeners()
     }
 
     override fun onStop() {
-        super.onStop()
         viewModel.saveCurrentBin(binEditText?.text?.trim().toString())
+        super.onStop()
     }
 
     private fun initViews() {
         binEditText?.apply {
             val savedBin = viewModel.getCurrentBin()
-            setText(savedBin ?: getString(R.string.sample_bin))
-            if (savedBin == null)
+            if (savedBin == null) {
+                setText(R.string.sample_bin)
                 viewModel.getCardInfo(text.toString().toInt())
-            else
+            }
+            else {
+                setText(savedBin)
                 viewModel.getCardInfo(viewModel.getShowingBin().toInt())
+            }
         }
     }
 
@@ -53,7 +58,6 @@ class MainActivity : AppCompatActivity() {
             binding.apply {
                 progressBarView.progressBar.isVisible = state.loading
                 errorView.errorGroup.isVisible = state.error
-                errorView.errorTitle.text = state.errorCode ?: getString(R.string.error_loading)
                 cardView.cardViewGroup.isVisible = state.showing
             }
         }

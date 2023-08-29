@@ -4,7 +4,6 @@ import ru.cft.cardbybin.dto.Card
 
 data class FeedModel(
     val card: Card = Card(),
-    val errorCode: String? = null,
     val loading: Boolean = false,
     val error: Boolean = false,
     val showing: Boolean = false
@@ -22,10 +21,9 @@ data class FeedModel(
         error = false
     )
 
-    fun error(code: String) = copy(
+    fun error() = copy(
         loading = false,
         showing = false,
-        error = true,
-        errorCode = code
+        error = true
     )
 }
