@@ -1,18 +1,14 @@
 package ru.cft.cardbybin.viewholder
 
-import ru.cft.cardbybin.databinding.ActivityMainBinding
+import ru.cft.cardbybin.databinding.CardToViewBinding
 import ru.cft.cardbybin.dto.Card
 import ru.cft.cardbybin.util.CompanionCardByBin.yesOrNo
 
 class CardViewHolder(
-    private val binding: ActivityMainBinding
+    private val binding: CardToViewBinding
 ) {
     fun bind(card: Card) {
-        fillingCardFields(card)
-    }
-
-    private fun fillingCardFields(card: Card) {
-        binding.cardView.apply {
+        binding.apply {
             groupOneInclude.apply {
                 scheme.text = card.scheme
                 brand.text = card.brand

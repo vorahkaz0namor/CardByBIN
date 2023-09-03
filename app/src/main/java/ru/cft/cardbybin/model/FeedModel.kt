@@ -1,12 +1,9 @@
 package ru.cft.cardbybin.model
 
-import ru.cft.cardbybin.dto.Card
-
 data class FeedModel(
-    val card: Card = Card(),
     val loading: Boolean = false,
-    val error: Boolean = false,
-    val showing: Boolean = false
+    val showing: Boolean = false,
+    val error: Boolean = false
 ) {
     fun loading() = copy(
         loading = true,
@@ -14,10 +11,9 @@ data class FeedModel(
         error = false
     )
 
-    fun showing(card: Card) = copy(
+    fun showing() = copy(
         loading = false,
         showing = true,
-        card = card,
         error = false
     )
 

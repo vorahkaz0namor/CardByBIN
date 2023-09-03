@@ -13,6 +13,7 @@
         <item name="android:textColor">?attr/colorControlNormal</item>
         <item name="strokeColor">?attr/colorControlNormal</item>
         <item name="strokeWidth">@dimen/stroke_width</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/indent</item>
         <item name="android:layout_marginTop">@dimen/button_margin</item>
         <item name="android:layout_marginBottom">@dimen/indent</item>
@@ -22,6 +23,13 @@
     <style name="Widget.AppTheme.CardBinEnter" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu">
         <item name="hintEnabled">false</item>
         <item name="boxBackgroundColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.AppTheme.CardByBinProgressBar" parent="@android:style/Widget.Holo.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:visibility">gone</item>
     </style>
 
 </resources>

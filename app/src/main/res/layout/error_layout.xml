@@ -8,7 +8,8 @@
         android:id="@+id/errorGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:constraint_referenced_ids="errorTitle, retryButton"
+        app:constraint_referenced_ids="errorTitle, resetButton"
+        android:visibility="gone"
         />
 
     <TextView
@@ -18,15 +19,15 @@
         android:text="@string/error_loading"
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/retryButton"
+        app:layout_constraintBottom_toTopOf="@id/resetButton"
         app:layout_constraintVertical_chainStyle="packed"
         />
 
     <Button
-        android:id="@+id/retryButton"
+        android:id="@+id/resetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/retry_loading"
+        android:text="@string/reset_loading"
         style="@style/Widget.AppTheme.CardOutlinedButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

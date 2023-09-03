@@ -26,11 +26,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders.usesCleartextTraffic = false
-            buildConfigField "String", "BASE_URL", '"https://lookup.binlist.net"'
+            buildConfigField "String", "BASE_URL", '"https://lookup.binlist.net/"'
         }
         debug {
             manifestPlaceholders.usesCleartextTraffic = true
-            buildConfigField "String", "BASE_URL", '"https://lookup.binlist.net"'
+            buildConfigField "String", "BASE_URL", '"https://lookup.binlist.net/"'
         }
     }
     compileOptions {

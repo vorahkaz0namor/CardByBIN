@@ -1,59 +1,76 @@
 package ru.cft.cardbybin.viewmodel
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.cft.cardbybin.db.AppDb
-import ru.cft.cardbybin.dto.BinList
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import okhttp3.internal.http.HTTP_OK
 import ru.cft.cardbybin.dto.Card
 import ru.cft.cardbybin.model.FeedModel
-import ru.cft.cardbybin.repository.CardRepositoryDb
-import ru.cft.cardbybin.repository.CardRepositoryDbImpl
-import ru.cft.cardbybin.repository.CardRepositoryNet
-import ru.cft.cardbybin.repository.CardRepositoryNetImpl
+import ru.cft.cardbybin.repository.CardRepository
+import ru.cft.cardbybin.util.AndroidUtils.defaultDispatcher
+import ru.cft.cardbybin.util.CompanionCardByBin.exceptionCode
+import ru.cft.cardbybin.util.CompanionCardByBin.SAMPLE_BIN
+import ru.cft.cardbybin.util.SingleLiveEvent
+import javax.inject.Inject
 
-class CardViewModel(application: Application) : AndroidViewModel(application) {
-    private val repositoryNet: CardRepositoryNet = CardRepositoryNetImpl()
-    private val repositoryDb: CardRepositoryDb =
-        CardRepositoryDbImpl(AppDb.getInstance(application).cardDao())
-    private val _binList = MutableLiveData(BinList())
-    val binListForView: LiveData<BinList>
+@OptIn(ExperimentalCoroutinesApi::class)
+@HiltViewModel
+class CardViewModel @Inject constructor(
+    private val repository: CardRepository
+) : ViewModel() {
+    private lateinit var _binList: List<Int>
+    val binListForView: List<Int>
         get() = _binList
-    private val _cardInfo = MutableLiveData(FeedModel())
-    val cardInfo: LiveData<FeedModel>
+    private val _cardState = MutableLiveData(FeedModel())
+    val cardState: LiveData<FeedModel>
+        get() = _cardState
+    private lateinit var _cardInfo: Flow<Card>
+    val cardInfo: Flow<Card>
         get() = _cardInfo
-    private var currentCardBin: String? = null
-    private lateinit var showingBin: String
+    private val _eventOccurrence = SingleLiveEvent(HTTP_OK)
+    val eventOccurrence: LiveData<Int>
+        get() = _eventOccurrence
+    private var _currentCardBin = SAMPLE_BIN
+    val currentCardBin: String
+        get() = _currentCardBin.toString()
 
-    fun getCardInfo(bin: Int) {
-        _cardInfo.value = _cardInfo.value?.loading()
-        repositoryNet.getCardInfo(bin, object : CardRepositoryNet.CardCallback<Card> {
-            override fun onSuccess(result: Card) {
-                showingBin = bin.toString()
-                repositoryDb.saveBin(bin)
-                getBinHistory()
-                _cardInfo.postValue(_cardInfo.value?.showing(result))
-            }
-            override fun onError(e: Exception) {
-                Log.d("WE'VE GOT AN EXCEPTION:", e.toString())
-                _cardInfo.postValue(_cardInfo.value?.error())
-            }
-        })
+    init {
+        viewModelScope.launch {
+            repository.getAllBins().mapLatest { _binList = it }
+                .flowOn(defaultDispatcher)
+        }
+        viewModelScope.launch {
+            repository.getCardInfo(_currentCardBin)
+                .mapLatest {
+                    try {
+                        _cardState.value = _cardState.value?.loading()
+                        _cardInfo = flowOf(it).flowOn(defaultDispatcher)
+                        _cardState.value = _cardState.value?.showing()
+                        _eventOccurrence.value = HTTP_OK
+                    } catch (e: Exception) {
+                        Log.d("GET CARD | V.M.", e.toString())
+                        _cardState.value = _cardState.value?.error()
+                        _eventOccurrence.value = exceptionCode(e)
+                    }
+                }
+                .flowOn(defaultDispatcher)
+                .distinctUntilChanged()
+                .stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted
+                        .WhileSubscribed(stopTimeoutMillis = 7_000),
+                    initialValue = Card()
+                )
+        }
     }
 
-    private fun getBinHistory() {
-        _binList.postValue(
-            _binList.value?.copy(binList = repositoryDb.getAllBins())
-        )
+    fun saveCurrentBin(bin: Int) {
+        _currentCardBin = bin
     }
-
-    fun saveCurrentBin(bin: String?) {
-        currentCardBin = bin
-    }
-
-    fun getCurrentBin() = currentCardBin
-
-    fun getShowingBin() = showingBin
 }
