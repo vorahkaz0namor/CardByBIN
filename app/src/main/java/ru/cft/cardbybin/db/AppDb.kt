@@ -7,7 +7,8 @@ import ru.cft.cardbybin.entity.BinEntity
 
 @Database(
     entities = [BinEntity::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class AppDb : RoomDatabase() {
     abstract fun cardDao(): CardDao

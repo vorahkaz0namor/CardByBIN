@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 object AndroidUtils {
@@ -28,4 +29,14 @@ object AndroidUtils {
             }
         }
     }
+
+    fun <T> Flow<T>.hotFlow(scope: CoroutineScope, initial: T): Flow<T> =
+        flowOn(defaultDispatcher)
+            .distinctUntilChanged()
+            .stateIn(
+                scope = scope,
+                started = SharingStarted
+                    .WhileSubscribed(stopTimeoutMillis = 7_000),
+                initialValue = initial
+            )
 }

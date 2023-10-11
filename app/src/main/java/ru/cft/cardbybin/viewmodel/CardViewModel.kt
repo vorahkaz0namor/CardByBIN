@@ -1,6 +1,5 @@
 package ru.cft.cardbybin.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,64 +12,66 @@ import okhttp3.internal.http.HTTP_OK
 import ru.cft.cardbybin.dto.Card
 import ru.cft.cardbybin.model.FeedModel
 import ru.cft.cardbybin.repository.CardRepository
-import ru.cft.cardbybin.util.AndroidUtils.defaultDispatcher
+import ru.cft.cardbybin.util.AndroidUtils.hotFlow
 import ru.cft.cardbybin.util.CompanionCardByBin.exceptionCode
 import ru.cft.cardbybin.util.CompanionCardByBin.SAMPLE_BIN
+import ru.cft.cardbybin.util.CompanionCardByBin.customLog
 import ru.cft.cardbybin.util.SingleLiveEvent
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class CardViewModel @Inject constructor(
     private val repository: CardRepository
 ) : ViewModel() {
-    private lateinit var _binList: List<Int>
-    val binListForView: List<Int>
+    private lateinit var _binList: Flow<List<Int>>
+    val binListForView: Flow<List<Int>>
         get() = _binList
     private val _cardState = MutableLiveData(FeedModel())
     val cardState: LiveData<FeedModel>
         get() = _cardState
-    private lateinit var _cardInfo: Flow<Card>
-    val cardInfo: Flow<Card>
+    private var _cardInfo = MutableLiveData(Card())
+    val cardInfo: LiveData<Card>
         get() = _cardInfo
     private val _eventOccurrence = SingleLiveEvent(HTTP_OK)
     val eventOccurrence: LiveData<Int>
         get() = _eventOccurrence
     private var _currentCardBin = SAMPLE_BIN
-    val currentCardBin: String
-        get() = _currentCardBin.toString()
+    val currentCardBin: Int
+        get() = _currentCardBin
 
     init {
+        @OptIn(ExperimentalCoroutinesApi::class)
         viewModelScope.launch {
-            repository.getAllBins().mapLatest { _binList = it }
-                .flowOn(defaultDispatcher)
+            _binList = repository.getAllBins()
+                .mapLatest { it }
+                .hotFlow(viewModelScope, emptyList())
         }
+        getCard()
+    }
+
+    fun setCurrentBin(bin: String) {
         viewModelScope.launch {
-            repository.getCardInfo(_currentCardBin)
-                .mapLatest {
-                    try {
-                        _cardState.value = _cardState.value?.loading()
-                        _cardInfo = flowOf(it).flowOn(defaultDispatcher)
-                        _cardState.value = _cardState.value?.showing()
-                        _eventOccurrence.value = HTTP_OK
-                    } catch (e: Exception) {
-                        Log.d("GET CARD | V.M.", e.toString())
-                        _cardState.value = _cardState.value?.error()
-                        _eventOccurrence.value = exceptionCode(e)
-                    }
-                }
-                .flowOn(defaultDispatcher)
-                .distinctUntilChanged()
-                .stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted
-                        .WhileSubscribed(stopTimeoutMillis = 7_000),
-                    initialValue = Card()
-                )
+            _currentCardBin = bin.toInt()
         }
     }
 
-    fun saveCurrentBin(bin: Int) {
-        _currentCardBin = bin
+    fun getCardByCurrentBin(bin: String) {
+        setCurrentBin(bin)
+        getCard()
+    }
+
+    private fun getCard() {
+        viewModelScope.launch {
+            try {
+                _cardState.value = _cardState.value?.loading()
+                _cardInfo.value = repository.getCardInfo(currentCardBin)
+                _cardState.value = _cardState.value?.showing()
+                _eventOccurrence.value = HTTP_OK
+            } catch (e: Exception) {
+                customLog("GET CARD INFO", e)
+                _cardState.value = _cardState.value?.error()
+                _eventOccurrence.value = exceptionCode(e)
+            }
+        }
     }
 }

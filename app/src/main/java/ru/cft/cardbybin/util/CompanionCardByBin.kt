@@ -1,5 +1,6 @@
 package ru.cft.cardbybin.util
 
+import android.util.Log
 import okhttp3.internal.http.HTTP_FORBIDDEN
 import okhttp3.internal.http.HTTP_NOT_FOUND
 import okhttp3.internal.http.HTTP_NO_CONTENT
@@ -12,9 +13,10 @@ object CompanionCardByBin {
     const val SAMPLE_BIN = 45713706
     /** Required BIN length */
     const val BIN_LENGTH = 8
-    val yesOrNo: (Boolean) -> String = { mean: Boolean ->
-        if (mean) "Yes" else "No"
-    }
+    /** Converts Boolean condition to String representation */
+    val yesOrNo: (Boolean) -> String = { if (it) "yes" else "no" }
+    /** Sets text depending on the input content */
+    val customSetText: (String) -> String = { it.ifBlank { "-" } }
     /** `520 Unknown Error` (non-standard HTTP code CloudFlare) */
     private const val HTTP_UNKNOWN_ERROR = 520
     /** `444 Connection Failed` (thought up code) */
@@ -52,5 +54,11 @@ object CompanionCardByBin {
             }
             else -> "Continue..."
         }
+    }
+
+    /** Custom caught exception logging */
+    fun customLog(action: String, e: Exception) {
+        Log.d(action, "CAUGHT EXCEPTION => $e\n" +
+                "DESCRIPTION => ${overview(exceptionCode(e))}")
     }
 }

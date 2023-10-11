@@ -14,34 +14,82 @@
         />
 
     <TextView
-        android:id="@+id/bankNameAndCity"
-        android:layout_width="@dimen/zero_dp"
+        android:id="@+id/bankNameHint"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:srcCompat="@sample/card.json/bank/name"
+        android:hint="@string/bank_name_hint"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bankHint"
-        app:layout_constraintBottom_toTopOf="@id/bankUrl"
+        />
+
+    <TextView
+        android:id="@+id/bankName"
+        style="@style/Widget.AppTheme.ShiftedCardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:srcCompat="@sample/card.json/bank/name"
+        app:layout_constraintStart_toEndOf="@id/bankNameHint"
+        app:layout_constraintTop_toBottomOf="@id/bankHint"
+        />
+
+    <TextView
+        android:id="@+id/bankCityHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/bank_city_hint"
+        app:layout_constraintStart_toEndOf="@id/bankName"
+        app:layout_constraintTop_toBottomOf="@id/bankHint"
+        />
+
+    <TextView
+        android:id="@+id/bankCity"
+        style="@style/Widget.AppTheme.ShiftedCardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:srcCompat="@sample/card.json/bank/city"
+        app:layout_constraintStart_toEndOf="@id/bankCityHint"
+        app:layout_constraintTop_toBottomOf="@id/bankHint"
+        />
+
+    <TextView
+        android:id="@+id/bankUrlHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/bank_url_hint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bankNameHint"
         />
 
     <TextView
         android:id="@+id/bankUrl"
-        android:layout_width="@dimen/zero_dp"
+        style="@style/Widget.AppTheme.ShiftedCardText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoLink="web"
         tools:srcCompat="@sample/card.json/bank/url"
+        app:layout_constraintStart_toEndOf="@id/bankUrlHint"
+        app:layout_constraintTop_toBottomOf="@id/bankNameHint"
+        />
+
+    <TextView
+        android:id="@+id/bankPhoneHint"
+        style="@style/Widget.AppTheme.CardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/bank_phone_hint"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bankNameAndCity"
-        app:layout_constraintBottom_toTopOf="@id/bankPhone"
+        app:layout_constraintTop_toBottomOf="@id/bankUrlHint"
         />
 
     <TextView
         android:id="@+id/bankPhone"
-        android:layout_width="@dimen/zero_dp"
+        style="@style/Widget.AppTheme.ShiftedCardText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoLink="phone"
         tools:srcCompat="@sample/card.json/bank/phone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bankUrl"
+        app:layout_constraintStart_toEndOf="@id/bankPhoneHint"
+        app:layout_constraintTop_toBottomOf="@id/bankUrlHint"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
