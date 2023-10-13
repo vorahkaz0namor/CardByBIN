@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Card By BIN</string>
-    <string name="hint_for_enter_bin">Введите первые восемь цифр\\nномера карты (BIN/IIN)</string>
+    <string name="hint_for_enter_bin">Введите первые восемь цифр\nномера карты (BIN/IIN)</string>
     <string name="scheme_hint">СХЕМА / СЕТЬ</string>
     <string name="brand_hint">БРЕНД</string>
     <string name="number_hint">НОМЕР КАРТЫ</string>
@@ -15,7 +14,11 @@
     <string name="get_card_info_button_text">Информация о карте</string>
     <string name="bank_hint">БАНК</string>
     <string name="empty_bin_field">Поле BIN/IIN не может быть пустым!</string>
-    <string name="wrong_bin_length">BIN/IIN содержит только 8 цифр!</string>
-    <string name="retry_loading">Повторить</string>
-    <string name="error_loading">Что-то пошло не так…\\nНо можно повторить еще раз</string>
+    <string name="wrong_bin_length">BIN/IIN может содержать только 8 цифр!</string>
+    <string name="reset_loading">Сброс</string>
+    <string name="error_loading">Что-то пошло не так…\nНо можно повторить еще раз</string>
+    <string name="bank_name_hint">имя:</string>
+    <string name="bank_city_hint">, город:</string>
+    <string name="bank_url_hint">сайт:</string>
+    <string name="bank_phone_hint">телефон:</string>
 </resources>

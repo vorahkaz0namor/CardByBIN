@@ -4,100 +4,133 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import com.google.android.material.snackbar.BaseTransientBottomBar
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import okhttp3.internal.http.HTTP_OK
 import ru.cft.cardbybin.R
 import ru.cft.cardbybin.databinding.ActivityMainBinding
 import ru.cft.cardbybin.util.CompanionCardByBin.BIN_LENGTH
 import ru.cft.cardbybin.viewholder.CardViewHolder
 import ru.cft.cardbybin.viewmodel.CardViewModel
 import ru.cft.cardbybin.util.AndroidUtils
+import ru.cft.cardbybin.util.AndroidUtils.scopeWithRepeat
+import ru.cft.cardbybin.util.CompanionCardByBin.SAMPLE_BIN
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val binding by lazy(LazyThreadSafetyMode.NONE) {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
     private val viewModel: CardViewModel by viewModels()
     private var snackbar: Snackbar? = null
+    private val binEditText: EditText?
+        get() = binding.cardView.dropdownCardBin.editText
+    private val bin: String
+        get() = binEditText?.text?.trim().toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
         initViews()
         subscribe()
         setupListeners()
     }
 
     override fun onStop() {
+        viewModel.setCurrentBin(bin)
         super.onStop()
-        viewModel.saveCurrentBin(binding.cardView.dropdownCardBin.editText?.text?.trim().toString())
     }
 
     private fun initViews() {
-        binding.cardView.dropdownCardBin.editText?.apply {
-            val savedBin = viewModel.getCurrentBin()
-            setText(savedBin ?: getString(R.string.sample_bin))
-            if (savedBin == null)
-                viewModel.getCardInfo(this.text.toString().toInt())
-            else
-                viewModel.getCardInfo(viewModel.getShowingBin().toInt())
-        }
+        setContentView(binding.root)
+        setBinEditText()
     }
 
     private fun subscribe() {
-        viewModel.cardInfo.observe(this@MainActivity) { state ->
-            CardViewHolder(binding).bind(state.card)
-            binding.apply {
-                progressBarView.progressBar.isVisible = state.loading
-                errorView.errorGroup.isVisible = state.error
-                cardView.cardViewGroup.isVisible = state.showing
+        viewModel.apply {
+            lifecycleScope.launch {
+                cardState.observe(this@MainActivity) { state ->
+                    binding.apply {
+                        progressBarView.progressBar.isVisible = state.loading
+                        errorView.errorGroup.isVisible = state.error
+                        cardView.cardViewGroup.isVisible = state.showing
+                    }
+                }
+            }
+            scopeWithRepeat {
+                cardInfo.observe(this@MainActivity) {
+                    CardViewHolder(binding.cardView).bind(it)
+                }
+            }
+            lifecycleScope.launch {
+                eventOccurrence.observe(this@MainActivity) { code ->
+                    if (code != HTTP_OK)
+                        binding.errorView.errorTitle.text =
+                            getString(R.string.error_loading)
+                }
+            }
+            lifecycleScope.launch {
+                binListForView.collectLatest {
+                    val dropDownAdapter = ArrayAdapter(
+                        /* context = */ this@MainActivity,
+                        /* resource = */ R.layout.bin_list_item,
+                        /* objects = */ it
+                    )
+                    (binEditText as AutoCompleteTextView).setAdapter(dropDownAdapter)
+                }
             }
         }
     }
 
     private fun setupListeners() {
         binding.apply {
-            cardView.apply {
-                getCardInfoButton.setOnClickListener {
-                    if (snackbar != null && snackbar?.isShown == true)
-                        snackbar?.dismiss()
-                    AndroidUtils.hideKeyboard(dropdownCardBin)
-                    val bin = dropdownCardBin.editText?.text?.trim() ?: ""
+            lifecycleScope.launch {
+                cardView.getCardInfoButton.setOnClickListener {
+                    snackbarDismiss()
+                    AndroidUtils.hideKeyboard(root)
                     when {
-                        bin.isBlank() -> showSnackbar(getString(R.string.empty_bin_field))
-                        bin.length != BIN_LENGTH -> showSnackbar(getString(R.string.wrong_bin_length))
-                        else -> viewModel.getCardInfo(
-                            bin.toString().toInt()
-                        )
+                        bin.isBlank() ->
+                            showSnackbar(getString(R.string.empty_bin_field))
+                        bin.length != BIN_LENGTH ->
+                            showSnackbar(getString(R.string.wrong_bin_length))
+                        else -> viewModel.getCardByCurrentBin(bin)
                     }
                 }
-                dropdownCardBin.editText?.setOnClickListener {
-                    showDropDownMenu()
+            }
+            lifecycleScope.launch {
+                errorView.resetButton.setOnClickListener {
+                    viewModel.getCardByCurrentBin(SAMPLE_BIN.toString())
+                    setBinEditText()
                 }
             }
-            errorView.retryButton.setOnClickListener {
-                subscribe()
-            }
         }
+    }
+
+    private fun setBinEditText() {
+        binEditText?.setText(viewModel.currentCardBin.toString())
     }
 
     private fun showSnackbar(message: String) {
         snackbar = Snackbar.make(
             binding.root,
             message,
-            BaseTransientBottomBar.LENGTH_INDEFINITE
+            Snackbar.LENGTH_INDEFINITE
         )
+            .setTextMaxLines(3)
+            .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
             .setAction(android.R.string.ok) {}
         snackbar?.show()
     }
 
-    private fun showDropDownMenu() {
-        val dropDownAdapter = ArrayAdapter(
-            this@MainActivity,
-            R.layout.bin_list_item,
-            viewModel.binListForView.value?.binList ?: emptyList()
-        )
-        val menu = binding.cardView.dropdownCardBin.editText as AutoCompleteTextView
-        menu.setAdapter(dropDownAdapter)
+    private fun snackbarDismiss() {
+        if (snackbar != null && snackbar?.isShown == true) {
+            snackbar?.dismiss()
+            snackbar = null
+        }
     }
 }

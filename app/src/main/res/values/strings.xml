@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Card By BIN</string>
-    <string name="sample_bin" translatable="false">45717360</string>
+    <string name="app_name" translatable="false">Card By BIN</string>
     <string name="hint_for_enter_bin">Enter the first eight digits\nof a card number (BIN/IIN)</string>
     <string name="scheme_hint">SCHEME / NETWORK</string>
     <string name="brand_hint">BRAND</string>
@@ -15,7 +14,11 @@
     <string name="get_card_info_button_text">Card information</string>
     <string name="bank_hint">BANK</string>
     <string name="empty_bin_field">BIN/IIN field can\'t be empty!</string>
-    <string name="wrong_bin_length">BIN/IIN contains only 8 digits!</string>
+    <string name="wrong_bin_length">BIN/IIN might contains only 8 digits!</string>
     <string name="error_loading">There\'s something wrong with the world today…\nBut you can try again</string>
-    <string name="retry_loading">Retry</string>
+    <string name="reset_loading">Reset</string>
+    <string name="bank_name_hint">name:</string>
+    <string name="bank_city_hint">, city:</string>
+    <string name="bank_url_hint">url:</string>
+    <string name="bank_phone_hint">phone:</string>
 </resources>

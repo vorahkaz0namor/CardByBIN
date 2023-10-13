@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="zero_dp">0dp</dimen>
-    <dimen name="indent">16dp</dimen>
-    <dimen name="hint_size">48dp</dimen>
+    <dimen name="stroke_width">2dp</dimen>
     <dimen name="text_padding_bottom">8dp</dimen>
     <dimen name="button_margin">12dp</dimen>
-    <dimen name="stroke_width">2dp</dimen>
+    <dimen name="indent">16dp</dimen>
+    <dimen name="button_text_size">16sp</dimen>
+    <dimen name="hint_size">48dp</dimen>
 </resources>
