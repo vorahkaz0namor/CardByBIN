@@ -9,6 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import okhttp3.internal.http.HTTP_OK
+import ru.cft.cardbybin.dto.Bin
 import ru.cft.cardbybin.dto.Card
 import ru.cft.cardbybin.model.FeedModel
 import ru.cft.cardbybin.repository.CardRepository
@@ -35,9 +36,9 @@ class CardViewModel @Inject constructor(
     private val _eventOccurrence = SingleLiveEvent(HTTP_OK)
     val eventOccurrence: LiveData<Int>
         get() = _eventOccurrence
-    private var _currentCardBin = SAMPLE_BIN
-    val currentCardBin: Int
-        get() = _currentCardBin
+    private var _currentCardBin = Bin(bin = SAMPLE_BIN)
+    val currentCardBin: String
+        get() = _currentCardBin.bin
 
     init {
         @OptIn(ExperimentalCoroutinesApi::class)
@@ -51,7 +52,7 @@ class CardViewModel @Inject constructor(
 
     fun setCurrentBin(bin: String) {
         viewModelScope.launch {
-            _currentCardBin = bin.toInt()
+            _currentCardBin = Bin(bin = bin)
         }
     }
 
@@ -64,7 +65,7 @@ class CardViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _cardState.value = _cardState.value?.loading()
-                _cardInfo.value = repository.getCardInfo(currentCardBin)
+                _cardInfo.value = repository.getCardInfo(_currentCardBin.binToInt())
                 _cardState.value = _cardState.value?.showing()
                 _eventOccurrence.value = HTTP_OK
             } catch (e: Exception) {

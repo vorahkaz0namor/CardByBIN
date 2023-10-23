@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setBinEditText() {
-        binEditText?.setText(viewModel.currentCardBin.toString())
+        binEditText?.setText(viewModel.currentCardBin)
     }
 
     private fun showSnackbar(message: String) {

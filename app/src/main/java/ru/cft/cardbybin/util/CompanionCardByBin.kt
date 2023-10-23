@@ -10,7 +10,7 @@ import java.net.ConnectException
 
 object CompanionCardByBin {
     /** BIN example */
-    const val SAMPLE_BIN = 45713706
+    const val SAMPLE_BIN = "45713706"
     /** Required BIN length */
     const val BIN_LENGTH = 8
     /** Converts Boolean condition to String representation */
